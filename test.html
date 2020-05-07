@@ -29,6 +29,9 @@
             /* onclick listener func will remember index value as free-variable because of closure */
             document.querySelector('#q1').children[index].onclick = () => console.log(`Button ${index} Click Result : ${i_2}`);
         }
+        if(typeof(index) === "undefined"){
+            console.log('index variable is gone after for loop');
+        }
 
     </script>
 </html>
