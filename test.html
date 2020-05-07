@@ -13,6 +13,7 @@
         const exampler = (fnc, subject) => {
             console_divider(subject);
             fnc();
+            console.log('\n');
         }
 
         /* Hoisting */
@@ -49,7 +50,22 @@
         }, 'Hoisting & Closure')
         
 
-        
+        /* Arrow Function */
+        exampler(() => {
+            const object_1 = {
+                fnc: function(){
+                    console.log(this);  // fnc
+                    const arr = [1,2,3,4];
+                    arr.forEach(e => {
+                        if(e == 1) console.log(this);   // fnc thanks to arrow function
+                    });
+                    arr.forEach(function(e){
+                        if(e == 1) console.log(this);   // window. without arrow func, 'var that = this' / function.bind(this) is used.
+                    });
+                }
+            }
+            object_1.fnc();
+        }, 'Arrow Function');
         
 
 
