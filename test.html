@@ -1,11 +1,40 @@
 <html>
+    <head>
+        <style>
+            .event{
+                background-color:darkolivegreen;
+                border: solid black 3px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        </style>
+    </head>
     <body>
         <div>
             <p id="q1">
-                <button>closure1</button>
-                <button>closure2</button>
-                <button>closure3</button>
+                <button>button1</button>
+                <button>button2</button>
+                <button>button3</button>
             </p>
+            <div id="q2">
+                <div class="event" id="e1" style="width: 300px; height: 300px;">
+                    1
+                    <div class="event" id="e2" style="width: 200px; height: 200px;">
+                        2
+                        <div class="event" id="e3" style="width: 100px; height: 100px;">
+                            3
+                        </div>
+                    </div>
+                </div>
+                <button id="bubbling">Bubbling</button>
+                <button id="capturing">Capturing</button>
+                <button id="bubbling_sp">Bubbling (Stop Propagtion)</button>
+                <button id="capturing_sp">Capturing (Stop Propagtion)</button>
+
+                <button id="addInnerDiv">addInnerDiv</button>
+                <button id="addListenerToParent">addListenerToParent</button>
+            </div>
         </div>
     </body>
     <script>
@@ -68,6 +97,67 @@
         }, 'Arrow Function');
         
 
+        /* Event Bubbling & Capturing & Delegation */
+        exampler(() => {
+            const logfunc = (e) => console.log(`click! div#${e.currentTarget.id}`); // 해당 listener의 element
+            const logfunc_delegation = (e) => console.log(`click! div#${e.target.id}`); // event를 발생시킨 element 
+            const logfunc_stop_propagation = (e) => {
+                console.log(`click! div#${e.currentTarget.id}`);
+                e.stopPropagation();
+            }
+            const removeAllEventListener = div => {
+                div.removeEventListener('click', logfunc)
+                div.removeEventListener('click', logfunc_stop_propagation)
+                div.removeEventListener('click', logfunc, true)
+                div.removeEventListener('click', logfunc_stop_propagation, true);
+                div.removeEventListener('click', logfunc_delegation);
+            }
+            let divs = document.querySelectorAll('#q2 div');
+            divs.forEach(div => {
+                div.addEventListener('click', logfunc)
+            })
+
+            /* Bubbling, Capturing은 진행순서에 차이가 있는 거고 target 기준으로 target의 부모, 조상 노드에서 이벤트를 전달한다.  */
+            document.querySelector('#bubbling').onclick = () => {   // target -> parent
+                divs.forEach(removeAllEventListener)
+                divs.forEach(div => {
+                    div.addEventListener('click', logfunc)
+                })
+            }
+            document.querySelector('#capturing').onclick = () => {  // parent -> target
+                divs.forEach(removeAllEventListener)
+                divs.forEach(div => {
+                    div.addEventListener('click', logfunc, true)
+                })
+            }
+            /* Stop Propagation은 Bubbling or Capturing에서 가장 첫 단계의 노드 이벤트만 발생시킨다. */
+            document.querySelector('#bubbling_sp').onclick = () => {    // target
+                divs.forEach(removeAllEventListener)
+                divs.forEach(div => {
+                    div.addEventListener('click', logfunc_stop_propagation)
+                })
+            }
+            document.querySelector('#capturing_sp').onclick = () => {   // parent
+                divs.forEach(removeAllEventListener)
+                divs.forEach(div => {
+                    div.addEventListener('click', logfunc_stop_propagation, true)
+                })
+            }
+
+            document.querySelector('#addInnerDiv').onclick = () => {
+                let newDiv = document.createElement('div');
+                newDiv.className = 'event'; newDiv.id='e4'; newDiv.style.width = '50px'; newDiv.style.height = '50px'; newDiv.textContent='4';
+                document.querySelector('#e3').append(newDiv);
+            }
+            document.querySelector('#addListenerToParent').onclick = () => {
+                divs.forEach(removeAllEventListener)
+                /* e1 listener 하나로 event를 listen하지만 JS는 Bubbling&Capturing 등의 Propagation 방법으로 e1,2,3,4를 클릭한 사실을 e1에게 전달할 수 있다. */
+                /* 즉 e.target으로 이벤트를 발생시킨 element를 부모 element에 등록된 리스너 만으로도 알아낼 수 있다. */
+                document.querySelector('#e1').addEventListener('click', logfunc_delegation);
+            }
+            
+
+        }, 'Event Bubbling & Capturing & Delegation');
 
     </script>
 </html>
