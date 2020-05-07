@@ -9,17 +9,17 @@
         </div>
     </body>
     <script>
-        const console_divider = () => console.log('-------------------------');
-        const exampler = (fnc) => {
+        const console_divider = (subject) => console.log(`------------${subject}-------------`);
+        const exampler = (fnc, subject) => {
+            console_divider(subject);
             fnc();
-            console_divider();
         }
 
         /* Hoisting */
         exampler(() => {
             for(var i_1=0; i_1<3; i_1++){}
             console.log(`Result of JS Hoisting -> i_1 = ${i_1}`);
-        })
+        }, 'Hoisting')
         
 
         
@@ -31,7 +31,7 @@
             }
             name = 'kim';
             printName();
-        })
+        }, 'Closure')
        
 
         /* Hoisting & Closure */
@@ -46,10 +46,11 @@
             if(typeof(index) === "undefined"){
                 console.log('index variable is gone after for loop');
             }
-        })
+        }, 'Hoisting & Closure')
         
 
-       
+        
+        
 
 
     </script>
