@@ -26,6 +26,7 @@
         for(var i_2=0; i_2<3; i_2++){
             /* 3 index (let)variables in for loop are all indepenedent variable */
             let index = i_2;
+            /* onclick listener func will remember index value as free-variable because of closure */
             document.querySelector('#q1').children[index].onclick = () => console.log(`Button ${index} Click Result : ${i_2}`);
         }
 
