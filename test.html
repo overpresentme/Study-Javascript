@@ -1,0 +1,33 @@
+<html>
+    <body>
+        <div>
+            <p id="q1">
+                <button>closure1</button>
+                <button>closure2</button>
+                <button>closure3</button>
+            </p>
+        </div>
+    </body>
+    <script>
+        /* Hoisting */
+        for(var i_1=0; i_1<3; i_1++){}
+        console.log(`Result of JS Hoisting -> i_1 = ${i_1}`);
+
+        /* Closure */
+        let name = 'lee';
+        const printName = () => {
+            console.log(`Result of Closure -> name = ${name}`); // printName func remember name variable memory location
+        }
+        name = 'kim';
+        printName();
+
+        /* Hoisting & Closure */
+        /* i_2 is just one variable because of hoisting */
+        for(var i_2=0; i_2<3; i_2++){
+            /* 3 index (let)variables in for loop are all indepenedent variable */
+            let index = i_2;
+            document.querySelector('#q1').children[index].onclick = () => console.log(`Button ${index} Click Result : ${i_2}`);
+        }
+
+    </script>
+</html>
